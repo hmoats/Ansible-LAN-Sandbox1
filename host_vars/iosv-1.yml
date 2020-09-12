@@ -1,0 +1,16 @@
+---
+ospf:
+  - network 192.168.255.0 0.0.0.255 area 0
+l3int:
+  - interface: GigabitEthernet0/1
+    description: iosv-2
+    ip: 192.168.255.17
+    mask: 255.255.255.252
+  - interface: GigabitEthernet0/2
+    description: iosvl2-1
+    ip: 192.168.255.2
+    mask: 255.255.255.252
+  - interface: GigabitEthernet0/3
+    description: iosvl2-2
+    ip: 192.168.255.14
+    mask: 255.255.255.252

@@ -1,0 +1,15 @@
+---
+stp:
+  - spanning-tree mode rapid-pvst
+  - spanning-tree portfast edge default
+  - spanning-tree portfast edge bpduguard default
+  - spanning-tree vlan 1-4094 priority 32768
+trunk: 
+  - interface: GigabitEthernet0/1
+    description: iosvl2-1
+    allowed_vlans: 10,20,30,40,999
+    enabled: True
+  - interface: GigabitEthernet0/2
+    description: iosvl2-2
+    allowed_vlans: 10,20,30,40,999
+    enabled: True

@@ -1,0 +1,4 @@
+---
+name_server1: 8.8.8.8  
+name_server2: 8.8.4.4
+domain_name: example.com

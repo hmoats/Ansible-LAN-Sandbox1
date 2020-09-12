@@ -1,0 +1,75 @@
+---
+- name: configure l3 SVI
+  ios_l3_interface:
+    name: "{{ item.interface }}"
+    ipv4: "{{ item.ipv4 }}"
+  with_items: "{{ hostvars[inventory_hostname].l3svi }}"
+  when: hostvars[inventory_hostname].l3svi[0] is defined
+
+- name: Configure interface descriptions and enable
+  ios_interfaces:
+    config:
+      - name: "{{ item.interface }}"
+        description: "{{ item.description }}"
+        enabled: "{{ item.enabled }}"
+  with_items: "{{ hostvars[inventory_hostname].l3svi }}"
+  when: hostvars[inventory_hostname].l3svi[0] is defined
+
+- name: Configure l2 trunks
+  ios_l2_interfaces:
+    config:
+      - name: "{{ item.interface }}"
+        trunk:
+          encapsulation: dot1q
+          allowed_vlans: "{{ item.allowed_vlans }}"
+  with_items: "{{ hostvars[inventory_hostname].trunk }}"
+  when: hostvars[inventory_hostname].trunk[0] is defined
+
+- name: Configure l2 access
+  ios_l2_interfaces:
+    config:
+      - name: "{{ item.interface }}"
+        access:
+          vlan: "{{ item.vlan }}"
+  with_items: "{{ hostvars[inventory_hostname].access }}"
+  when: hostvars[inventory_hostname].access[0] is defined
+
+- name: configure l3 interface
+  ios_config:
+    lines:
+      - no switchport
+      - description {{ item.description }}
+      - ip address {{ item.ip }} {{ item.mask }}
+      - no shutdown
+    parents: interface {{ item.interface }}
+  with_items: "{{ hostvars[inventory_hostname].l3int }}"
+  when: hostvars[inventory_hostname].l3int[0] is defined
+
+- name: configure l3 HSRP
+  ios_config:
+    lines:
+      - standby {{ item.id }} ip {{ item.ipv4 }}
+      - standby {{ item.id }} priority {{ item.priority }}
+      - no shutdown
+    parents: interface {{ item.interface }}
+  with_items: "{{ hostvars[inventory_hostname].l3hsrp }}"
+  when: hostvars[inventory_hostname].l3hsrp[0] is defined
+
+- name: Configure interface descriptions and enable
+  ios_interfaces:
+    config:
+      - name: "{{ item.interface }}"
+        description: "{{ item.description }}"
+        enabled: "{{ item.enabled }}"
+  with_items: "{{ hostvars[inventory_hostname].trunk }}"
+  when: hostvars[inventory_hostname].trunk[0] is defined
+
+- name: configure STP
+  ios_config:
+    lines: "{{ item }}"
+  with_items: "{{ hostvars[inventory_hostname].stp }}"
+  when: hostvars[inventory_hostname].stp[0] is defined
+
+- name: Save config if modified
+  ios_config:
+    save_when: modified

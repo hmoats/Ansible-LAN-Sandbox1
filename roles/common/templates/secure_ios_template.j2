@@ -1,0 +1,48 @@
+{#
+! Ensures all passwords and secrets are obfuscated when looking at
+! configuration files
+#}
+no ip domain-lookup
+service password-encryption
+no service dhcp
+login on-failure log
+login on-success log
+{#
+! Set the timezone properly. It is best to standardize on one
+! timezone for all routers, thus making problem tracking easier.
+#}
+clock timezone GMT 0
+{#
+! Create access list for mgmt-in
+#}
+ip access-list extended mgmt-in
+ permit tcp 172.16.1.0 0.0.0.255 any eq 22
+ permit icmp 172.16.1.0 0.0.0.255 any echo
+ deny   ip any any log-input
+{#
+! Create access list for mgmt-in
+#}
+line con 0
+ exec-timeout 15 0
+line vty 0 4
+ exec-timeout 15 0
+ access-class mgmt-in in
+ login local
+ transport input ssh
+{#
+! ssh config
+#}
+ip ssh version 2
+{#
+! Don't run the HTTP server.
+#}
+no ip http server
+no ip http secure-server
+{#
+! Disable noxious services
+#}
+no service pad
+no ip source-route
+no ip finger
+no ip bootp server
+no ip domain-lookup

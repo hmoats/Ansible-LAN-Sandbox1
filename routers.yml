@@ -1,0 +1,5 @@
+---
+- hosts: routers
+  roles:
+    - common
+    - router_interface

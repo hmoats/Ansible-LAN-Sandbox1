@@ -1,0 +1,35 @@
+---
+- name: Configure IOS login banner using roles/common/files/login_banner.cfg
+  ios_banner:
+    banner: login
+    text: "{{ lookup('file', 'roles/common/files/login_banner.cfg') }}"
+    state: present
+
+- name: Configure IOS exec banner using roles/common/files/exec_banner.cfg
+  ios_banner:
+    banner: exec
+    text: "{{ lookup('file', 'roles/common/files/exec_banner.cfg') }}"
+    state: present
+
+- name: Configure IOS incoming banner using roles/common/files/incoming_banner.cfg
+  ios_banner:
+    banner: incoming
+    text: "{{ lookup('file', 'roles/common/files/incoming_banner.cfg') }}"
+    state: present
+
+- name: Configure secure IOS template
+  ios_config:
+    src: secure_ios_template.j2
+
+- name: Configure hostname
+  ios_config:
+    src: hostname.j2
+
+- name: Configure domain
+  ios_config:
+    src: domain.j2
+
+- name: Configure DNS
+  ios_config:
+    src: dns.j2
+

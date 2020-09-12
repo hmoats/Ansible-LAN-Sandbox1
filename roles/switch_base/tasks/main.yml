@@ -1,0 +1,30 @@
+---
+- name: Create vlan 10 (core)
+  ios_vlan:
+    vlan_id: 10
+    name: core
+    state: present
+
+- name: Create vlan 20 (web)
+  ios_vlan:
+    vlan_id: 20
+    name: web
+    state: present
+
+- name: Create vlan 30 (app)
+  ios_vlan:
+    vlan_id: 30
+    name: app
+    state: present
+
+- name: Create vlan 40 (db)
+  ios_vlan:
+    vlan_id: 40
+    name: db
+    state: present
+
+- name: Create vlan 999 (quarantine)
+  ios_vlan:
+    vlan_id: 999
+    name: quarentine
+    state: present

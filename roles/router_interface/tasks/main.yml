@@ -1,0 +1,26 @@
+---
+- name: Configure interface descriptions and enable
+  ios_interfaces:
+    config:
+      - name: "{{ item.interface }}"
+        description: "{{ item.description }}"
+        enabled: "{{ item.enabled }}"
+  with_items: "{{ hostvars[inventory_hostname].l3svi }}"
+  when: hostvars[inventory_hostname].l3svi[0] is defined
+
+- name: configure l3 interface
+  ios_config:
+    lines:
+      - description {{ item.description }}
+      - ip address {{ item.ip }} {{ item.mask }}
+      - no shutdown
+    parents: interface {{ item.interface }}
+  with_items: "{{ hostvars[inventory_hostname].l3int }}"
+  when: hostvars[inventory_hostname].l3int[0] is defined
+
+- name: configure OSPF
+  ios_config:
+    lines: "{{ item }}"
+    parents: router ospf 10
+  with_items: "{{ hostvars[inventory_hostname].ospf }}"
+  when: hostvars[inventory_hostname].ospf[0] is defined

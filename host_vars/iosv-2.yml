@@ -1,0 +1,15 @@
+---
+l3int:
+  - interface: GigabitEthernet0/1
+    description: iosv-1
+    ip: 192.168.255.18
+    mask: 255.255.255.252
+  - interface: GigabitEthernet0/2
+    description: iosvl2-2
+    ip: 192.168.255.10
+    mask: 255.255.255.252
+  - interface: GigabitEthernet0/3
+    description: iosvl2-1
+    ip: 192.168.255.6
+    mask: 255.255.255.252
+

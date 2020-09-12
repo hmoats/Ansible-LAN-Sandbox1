@@ -1,0 +1,63 @@
+---
+stp:
+  - spanning-tree mode rapid-pvst
+  - spanning-tree portfast edge default
+  - spanning-tree portfast edge bpduguard default
+  - spanning-tree vlan 1-4094 priority 8192
+l3svi:
+  - interface: Vlan10
+    description: core
+    ipv4: 10.10.10.3/24
+    enabled: True
+  - interface: Vlan20
+    description: web
+    ipv4: 10.10.20.3/24
+    enabled: True
+  - interface: Vlan30
+    description: app
+    ipv4: 10.10.30.3/24
+    enabled: True
+  - interface: Vlan40
+    description: db
+    ipv4: 10.10.40.3/24
+    enabled: True
+l3hsrp:
+  - interface: Vlan10
+    id: 10
+    ipv4: 10.10.10.1
+    priority: 100
+  - interface: Vlan20
+    id: 20
+    ipv4: 10.10.20.1
+    priority: 100
+  - interface: Vlan30
+    id: 30
+    ipv4: 10.10.30.1
+    priority: 100
+  - interface: Vlan40
+    id: 40
+    ipv4: 10.10.40.1
+    priority: 100
+l3int:
+  - interface: GigabitEthernet0/1
+    description: iosv-2
+    ip: 192.168.255.9
+    mask: 255.255.255.252
+  - interface: GigabitEthernet0/2
+    description: iosv-1
+    ip: 192.168.255.13
+    mask: 255.255.255.252
+trunk: 
+  - interface: GigabitEthernet0/3
+    description: iosvl2-3
+    allowed_vlans: 10,20,30,40,999
+    enabled: True
+  - interface: GigabitEthernet1/0
+    description: iosvl2-4
+    allowed_vlans: 10,20,30,40,999
+    enabled: True
+  - interface: GigabitEthernet1/1
+    description: iosvl2-1
+    allowed_vlans: 10,20,30,40,999
+    enabled: True
+access:
